@@ -2,8 +2,7 @@ const model = require('../../models/Users')
 const repo = require('../../commons/repository')
 const bcrypt = require('bcrypt')
 
-const list = async (req, res) =>
-    res.send(await repo.list()(res)(model))
+const list = async (req, res) => res.send(await repo.list()(res)(model))
 
 
 const store = async (req, res) => {
