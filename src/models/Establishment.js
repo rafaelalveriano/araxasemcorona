@@ -43,6 +43,9 @@ const EstablishmentSchema = Schema({
         type: String,
         required: true,
     },
+    social: {
+        type: String,
+    },
     img: {
         type: String,
         required: true
