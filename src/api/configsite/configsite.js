@@ -6,7 +6,7 @@ const add = async (req, res) => {
     var fullUrl = req.protocol + '://' + req.get('host');
 
     const config_default = {
-        logo: fullUrl + "/images/logo_default.svg",
+        logo: fullUrl + "/images/logo_default.png",
         title_home: "É hora de nos unirmos ",
         subtitle_home: "Faça sua parte",
         text_home: "Mais do que nunca é hora estarmos juntos, mesmo que de longe. Este é um espaço com o intuito de combater a proliferação do Coronavirus (COVID-19), ajudando pessoas e empresas da cidade de Araxá. Se você está realizando entregas ou trabalhando remotamente, ou é entregador, nós seremos o elo entre você e seu cliente. ",

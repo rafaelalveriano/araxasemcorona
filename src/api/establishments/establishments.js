@@ -21,11 +21,24 @@ const valid_token = (bearerToken) => {
 }
 
 
-const list = async (req, res) => {
-    const bearerToken = req.headers.authorization;
+const listById = async (id, res) => {
+    try{
+        const establishment = await model.findById(id);
+        res.send(establishment);
+    }catch(err){
+        res.status(400).send();
+    }
 
+    
+}
+
+
+const list = async (req, res) => {
+    const { id } = req.params;
+    const bearerToken = req.headers.authorization;
     const authorization = valid_token(bearerToken);
 
+    if (id) return await listById(id, res);
 
     if (!authorization) {
         const establishment = await repo.list()(res)(model);
