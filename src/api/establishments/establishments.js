@@ -22,14 +22,14 @@ const valid_token = (bearerToken) => {
 
 
 const listById = async (id, res) => {
-    try{
-        const establishment = await model.findById(id);
+    try {
+        const establishment = await model.findOne({ _id: id });
         res.send(establishment);
-    }catch(err){
+    } catch (err) {
         res.status(400).send();
     }
 
-    
+
 }
 
 
