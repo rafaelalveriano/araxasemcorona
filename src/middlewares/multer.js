@@ -2,7 +2,7 @@ const multer = require('multer')
 const path = require('path')
 const crypto = require('crypto')
 
-const default_dir = path.resolve(__dirname, '..', '..', 'assets', 'images', 'bateries')
+const default_dir = path.resolve(__dirname, '..', '..', 'assets', 'images', 'upload')
 
 const allowedMimes = [
     "image/jpeg",
