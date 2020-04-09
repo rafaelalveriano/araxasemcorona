@@ -9,13 +9,6 @@ const list = async (req, res) => {
 
     const config = await repo.list()(res)(configsModel);
 
-    // const sectors = await repo.populate('categories')(res)(sectorModel);
-
-    // const categories = await repo.list()(res)(categorieModel);
-
-    // const establishments = await configsModel.find({ approved: true }).sort({ _id: 'descending' });
-
-
     try {
         const sectors = await sectorModel.find({})
             .populate({
@@ -33,13 +26,7 @@ const list = async (req, res) => {
         });
     } catch (err) {
         return res.status(400).send();
-    }
-
-
-    return res.send({
-        config,
-        sectors,
-    });
+    }    
 }
 
 

@@ -41,11 +41,11 @@ const list = async (req, res) => {
     if (id) return await listById(id, res);
 
     if (!authorization) {
-        const establishment = await repo.list()(res)(model);
+        const establishment = await repo.populate('categorie')(res)(model);
         return res.send(establishment);
     } else {
         try {
-            const establishment = await model.find()
+            const establishment = await model.find().populate('categorie')
                 .select("+email")
                 .select("+password")
                 .sort({ _id: 'descending' });
