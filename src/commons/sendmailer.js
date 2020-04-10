@@ -13,10 +13,14 @@ const send = async ({ from, to, subject, text }) => {
         }
     });
 
-    
+
     try {
-        await transporter.sendMail({ from, to, subject, text });
-        return true;
+        const send = await transporter.sendMail({ from, to, subject, text });
+        if (send) {
+            return true;
+        } else {
+            return false;
+        }
     } catch (err) {
         console.log(err.message)
         return false;

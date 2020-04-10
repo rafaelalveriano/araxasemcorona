@@ -8,7 +8,7 @@ const send = async (req, res) => {
         return res.status(400).send({ error: "preencha todos os campos!" });
 
     const send = await sendmailer.send({
-        from: "contato@araxasemcorona.com.br",
+        from: "araxasemcorona@gmail.com",
         to: "araxasemcorona@gmail.com",
         subject: `ARAXA SEM CORONA - ${subject}`,
         text: `
@@ -23,7 +23,7 @@ const send = async (req, res) => {
         return res.send("Sua mensagem foi enviada com sucesso!");
     } else {
         return res.status(400).send({ error: "Error ao enviar sua mensagem" });
-    }    
+    }
 }
 module.exports = {
     send,
