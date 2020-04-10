@@ -34,7 +34,7 @@ const multer_config = {
         if (allowedMimes.includes(file.mimetype)) {
             return cb(null, true)
         } else {
-            req.invalidFile = { error: 'Invalid file type' };
+            req.invalidFile = { error: 'Arquivo inválido' };
             return cb(null, false);
         }
     }
