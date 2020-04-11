@@ -2,45 +2,46 @@ const multer = require('multer')
 const path = require('path')
 const crypto = require('crypto')
 
-const default_dir = path.resolve(__dirname, '..', '..', 'assets', 'images', 'upload')
-
 const allowedMimes = [
     "image/jpeg",
     "image/png",
     "image/jpg",
 ]
 
-const multer_config = {
-    dest: default_dir,
+const default_dir = (dir) => path.resolve(__dirname, '..', '..', 'assets', 'images', dir);
 
-    storage: multer.diskStorage({
-        destination: (req, file, cb) => cb(null, default_dir),
+const confStorage = (dir) => multer.diskStorage({
 
-        filename: (req, file, cb) => {
-            crypto.randomBytes(12, (err, hash) => {
-                if (err || !allowedMimes.includes(file.mimetype)) return cb(err)
+    destination: (req, file, cb) => cb(null, default_dir(dir)),
 
-                const [_, ext] = file.originalname.split('.')
+    filename: (req, file, cb) => {
+        crypto.randomBytes(12, (err, hash) => {
+            if (err || !allowedMimes.includes(file.mimetype)) return cb(err)
 
-                const filename = `${hash.toString('hex')}.${ext}`
+            const [_, ext] = file.originalname.split('.')
 
-                return cb(null, filename)
-            })
+            const filename = `${hash.toString('hex')}.${ext}`
 
-        }
-    }),
+            return cb(null, filename)
+        })
 
-    fileFilter: (req, file, cb) => {
-        if (allowedMimes.includes(file.mimetype)) {
-            return cb(null, true)
-        } else {
-            req.invalidFile = { error: 'Arquivo inválido' };
-            return cb(null, false);
-        }
+    }
+});
+
+const confFilter = () => (req, file, cb) => {
+    if (allowedMimes.includes(file.mimetype)) {
+        return cb(null, true)
+    } else {
+        req.invalidFile = { error: 'Arquivo inválido' };
+        return cb(null, false);
     }
 }
 
 
-const singileUpload = (field) => multer(multer_config).single(field)
+const singileUpload = (field, dir) => multer({
+    dest: default_dir(dir),
+    storage: confStorage(dir),
+    fileFilter: confFilter()
+}).single(field)
 
 module.exports = { singileUpload }
