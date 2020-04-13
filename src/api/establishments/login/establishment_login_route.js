@@ -1,5 +1,5 @@
 const action = require('./establishment_login');
-const route = "/auth/establishment";
+const route = "/auth/establishment/:id?";
 
 
 module.exports = router => middleware => {
