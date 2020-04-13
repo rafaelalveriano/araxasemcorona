@@ -60,10 +60,12 @@ const EstablishmentSchema = Schema({
 
 EstablishmentSchema.pre('save', async function (next) {
     const hash = await bcrypt.hash(this.password, 10);
-    this.password = hash;
+    this.password = hash;    
 
     next();
 });
+
+
 
 const model = mongoose.model("Establishment", EstablishmentSchema);
 

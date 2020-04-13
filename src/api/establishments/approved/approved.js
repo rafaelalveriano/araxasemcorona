@@ -4,7 +4,6 @@ const repo = require('../../../commons/repository');
 
 
 
-
 const list_not_approveds = async (req, res) => {
     try {
         const establishment = await model.find({ approved: false })

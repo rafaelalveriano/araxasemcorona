@@ -1,7 +1,8 @@
 const { signToken, decodeToken } = require('../../commons/JwtToken');
 const model = require('../../models/Establishment');
-const modelCategorie = require('../../models/Categorie');
+const Categorie = require('../../models/Categorie');
 const repo = require('../../commons/repository');
+const error = require('../../commons/error');
 
 const valid_token = (bearerToken) => {
 
@@ -57,15 +58,36 @@ const list = async (req, res) => {
     }
 }
 
+const existEstablishment = async (user) => {
+    try {
+        const find = await model.findOne({ email: user }).select("+email");
+        if (find) {
+            return true;
+        }
+        return false;
+
+    } catch (err) {
+        return false;
+    }
+}
+
 const add = async (req, res) => {
+    const { email, categorie } = req.body;
+    const exist = await existEstablishment(email);
+
+    if (exist) return res.status(400).send({ error: "Este email já foi cadastrado" });
+
+
+    const categorieSelected = await Categorie.findById(categorie);
+
+    !categorieSelected && res.status(400).send({ error: "Selecione uma categoria!" });
+
     const establishment = await repo.create(req.body)(res)(model);
 
-
-    const categorie = await modelCategorie.findById(establishment.categorie);
-    categorie.establishments.push(establishment);
+    categorieSelected.establishments.push(establishment);
 
     try {
-        await categorie.save();
+        await categorieSelected.save();
     } catch (err) {
         return res.status(400).send();
     }
@@ -78,22 +100,54 @@ const remove = async (req, res) => {
 
     if (!id) return res.status(400).send();
 
-    await repo.remove(id)(res)(model);
+    const establishments = await repo.remove(id)(res)(model);
+    if (!establishments) return error(res)("Error ao remover o estabelecimento!");
 
-    return res.send(id);
+    const removeInSector = await repo.listOne({ _id: establishments.categorie })(res)(Categorie);
+    removeInSector.establishments.remove(establishments._id);
+
+    try {
+        await removeInSector.save();
+        return res.send(removeInSector);
+    } catch (err) {
+        return error(res)("Error ao remover o estabelecimento!");
+    }
 }
 
 const update = async (req, res) => {
+    const msg_error = "Error ao alterar o estabelecimento";
     const { id } = req.params;
     const params = req.body;
     delete params._id;
     delete params.approved;
 
-    if (!id) return res.status(400).send();
+    if (!id) return error(msg_error);
 
-    const sectors = await repo.update(id, params)(res)(model);
+    const establishments = await repo.listOne({ _id: id })(res)(model);
+    if (!establishments) return error(msg_error);
 
-    return res.send(sectors);
+    //remove in current categorie
+    let removeInCategorie = await repo.listOne({ _id: establishments.categorie })(res)(Categorie);
+    removeInCategorie.establishments.remove(id);
+
+    //update in new  categorie
+    const establishmentUpdated = await repo.update(id, params)(res)(model);
+    const updateInCategorie = await repo.listOne({ _id: params.categorie })(res)(Categorie);
+    updateInCategorie.establishments.push(establishmentUpdated);
+
+
+
+    try {
+        await removeInCategorie.save();
+        await updateInCategorie.save()
+        res.send(establishmentUpdated);
+    } catch (err) {
+        return error(msg_error);
+    }
+
+
+    //return error(res)("Error ao alterar o estabelecimento !");
+
 }
 
 

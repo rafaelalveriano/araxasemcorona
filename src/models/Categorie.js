@@ -1,4 +1,5 @@
 const mongoose = require("../config/mongoose");
+const Sector = require('./Sector');
 
 const Schema = mongoose.Schema;
 
@@ -17,6 +18,8 @@ const CategorieSchema = Schema({
         ref: 'Establishment',
     }],
 });
+
+
 
 const model = mongoose.model("Categorie", CategorieSchema);
 
