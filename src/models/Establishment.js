@@ -40,8 +40,10 @@ const EstablishmentSchema = Schema({
         required: true
     },
     whatsapp: {
-        type: String,
-        required: true,
+        type: String,        
+    },
+    phone: {
+        type: String,        
     },
     social: {
         type: String,
