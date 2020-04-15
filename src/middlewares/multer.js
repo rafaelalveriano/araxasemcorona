@@ -8,6 +8,7 @@ const allowedMimes = [
     "image/jpg",
 ]
 
+
 const default_dir = (dir) => path.resolve(__dirname, '..', '..', 'assets', 'images', dir);
 
 const confStorage = (dir) => multer.diskStorage({
