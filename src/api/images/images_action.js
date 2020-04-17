@@ -40,15 +40,9 @@ const upload = (req, res) => {
     const imgCompressed = compressImg(req.file.path, req.file.destination, req.file.filename);
 
     if (imgCompressed) {
-
-        if (remove(req.file.path)) {
-            const imgLink = `images/upload/${imgCompressed}`;
-            return res.send(imgLink)
-        } else {
-            return error(res)("Error ao enviar a imagem !");
-        }
-
-    } else {        
+        const imgLink = `images/upload/${imgCompressed}`;
+        return res.send(imgLink)
+    } else {
         return error(res)("Error ao enviar a imagem !");
     }
 }
