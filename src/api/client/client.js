@@ -3,7 +3,7 @@ const sectorModel = require('../../models/Sector');
 const categorieModel = require('../../models/Categorie');
 const establishmentModel = require('../../models/Establishment');
 const repo = require('../../commons/repository');
-
+const error = require('../../commons/error');
 
 const list = async (req, res) => {
 
@@ -26,8 +26,7 @@ const list = async (req, res) => {
         });
     } catch (err) {
         return res.status(400).send();
-    }    
+    }
 }
-
 
 module.exports = { list };

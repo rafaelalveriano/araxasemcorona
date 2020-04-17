@@ -33,6 +33,18 @@ const listById = async (id, res) => {
 
 }
 
+const listAuthenticate = async (res) => {
+    try {
+        const establishment = await model.find().populate('categorie')
+            .select("+email")
+            .select("+password")
+            .sort({ _id: 'descending' });
+
+        return res.send(establishment);
+    } catch (e) {
+        return res.status(400).send("Error ao listar os estabelecimentos");
+    }
+}
 
 const list = async (req, res) => {
     const { id } = req.params;
@@ -44,18 +56,10 @@ const list = async (req, res) => {
     if (!authorization) {
         const establishment = await repo.populate('categorie')(res)(model);
         return res.send(establishment);
-    } else {
-        try {
-            const establishment = await model.find().populate('categorie')
-                .select("+email")
-                .select("+password")
-                .sort({ _id: 'descending' });
-
-            return res.send(establishment);
-        } catch (e) {
-            return res.status(400).send("Error ao listar os estabelecimentos");
-        }
     }
+
+
+    return listAuthenticate(res);
 }
 
 const existEstablishment = async (user) => {
