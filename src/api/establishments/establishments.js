@@ -3,6 +3,7 @@ const model = require('../../models/Establishment');
 const Categorie = require('../../models/Categorie');
 const repo = require('../../commons/repository');
 const error = require('../../commons/error');
+const bcrypt = require('bcrypt');
 
 const valid_token = (bearerToken) => {
 
@@ -127,18 +128,27 @@ const update = async (req, res) => {
 
     if (!id) return error(msg_error);
 
-    const establishments = await repo.listOne({ _id: id })(res)(model);
+    const establishments = await model.findOne({ _id: id }).select("+email").select("+password");
+
+    if (establishments.email !== params.new_email)
+        params.email = params.new_email;
+
+    if (establishments.password !== params.new_password)
+        params.password = await bcrypt.hash(params.new_password, 10);
+
+    delete params.new_email;
+    delete params.new_password;
+
     if (!establishments) return error(msg_error);
 
-    //remove in current categorie
+    // //remove in current categorie
     let removeInCategorie = await repo.listOne({ _id: establishments.categorie })(res)(Categorie);
     removeInCategorie.establishments.remove(id);
 
-    //update in new  categorie
+    // //update in new  categorie
     const establishmentUpdated = await repo.update(id, params)(res)(model);
     const updateInCategorie = await repo.listOne({ _id: params.categorie })(res)(Categorie);
     updateInCategorie.establishments.push(establishmentUpdated);
-
 
 
     try {
@@ -148,10 +158,6 @@ const update = async (req, res) => {
     } catch (err) {
         return error(msg_error);
     }
-
-
-    //return error(res)("Error ao alterar o estabelecimento !");
-
 }
 
 
