@@ -11,6 +11,12 @@ Através deste projeto vamos auxiliar pequenas empresas e profissionais autônom
 ![alt text](https://i.ibb.co/f1kf2gy/Captura-de-Tela-2020-07-21-a-s-14-41-18.png)
 ![alt text](https://i.ibb.co/RT4RQw3/Captura-de-Tela-2020-07-21-a-s-14-41-59.png)
 
+## Dashboard
+![alt text](https://i.ibb.co/h9CkFfT/Captura-de-Tela-2020-07-21-a-s-14-55-05.png)
+![alt text](https://i.ibb.co/B6Bdpww/Captura-de-Tela-2020-07-21-a-s-14-55-17.png)
+![alt text](https://i.ibb.co/0BVqPxZ/Captura-de-Tela-2020-07-21-a-s-14-55-24.png)
+![alt text](https://i.ibb.co/fFbc8K6/Captura-de-Tela-2020-07-21-a-s-14-55-34.png)
+
 
 
 
